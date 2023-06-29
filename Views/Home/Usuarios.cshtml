@@ -1,0 +1,64 @@
+﻿@model IQueryable<Usuario>
+   
+@{
+    ViewData["Title"] = "Listagem";
+}
+
+<h1 class="text-primary">Usuários</h1>
+<hr>
+<a href="/Home/Cadastrar" class="btn btn-primary">Novo Usuário</a>
+@* <a asp-action="Responde">Responder Agora</a> *@
+@if (TempData.ContainsKey("Excluiu"))
+{
+    var excluiu = (bool)TempData["Excluiu"];
+    if (excluiu)
+    {
+        <partial name="_MensagemInfo" model="@("Usuário excluido com sucesso.")"/>
+    }
+    else
+    {
+        <partial name="_MensagemErro" model="@("Não foi possível excluir o Usuário.")"/>
+    }
+} 
+
+        @* <!--
+        <div class="alert alert-success mt-3 alert-dismissible fade show" role="alert">
+            Usuário excluido com sucesso.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>  -->          
+        <!--<div class="alert alert-warning mt-3 alert-dismissible fade show" role="alert">
+            Não foi possível excluir o Usuário
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div> --> *@
+    
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.Email</td>
+                <td>
+                    <a asp-action="Cadastrar" asp-route-id="@item.IdUsuario" class="btn btn-sm btn-secondary">Alterar</a>
+                    <a asp-action="Excluir" asp-route-id="@item.IdUsuario" class="btn btn-sm btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section Scripts{
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+}
+
+@section LogoPagina{
+    <img src="/img/usuarios.png" height="24" class="d-lg-inline-block align-text-bottom"/>
+}
